@@ -56,7 +56,7 @@ get_variables () {
   check_noobs
 
   ROOT_DEV_SIZE=$(cat "/sys/block/${ROOT_DEV_NAME}/size")
-  TARGET_END=$((ROOT_DEV_SIZE - (64420000000 / 512))) # 60 GiB spared for added partition
+  TARGET_END="108638207" # 60 GiB spared for added partition
 
   PARTITION_TABLE=$(parted -m "$ROOT_DEV" unit s print | tr -d 's')
 
