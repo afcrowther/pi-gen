@@ -371,3 +371,8 @@ You may also need to load the module by hand - run `modprobe binfmt_misc`.
 
 - Add raspberry pi kernel as a submodule
 - Add github actions build to produce the final image AND then tftp root (basically what is in the base/ folder + the raspberry pi bootloader apt package code)
+- Make stage 0 generate what is currently in the base/ directory (build kernel, modules, etc)
+- Include the initramfs in this project
+- Fix the config.txt to use the correct initrd
+- Fix cmdline to use cgroup stuff
+- Fix cmdline to not have a root part, instead let the initramfs handle it
