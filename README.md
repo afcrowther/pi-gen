@@ -366,3 +366,8 @@ To resolve this, ensure that the following files are available (install them if 
 ```
 
 You may also need to load the module by hand - run `modprobe binfmt_misc`.
+
+# TODO
+
+- Add raspberry pi kernel as a submodule
+- Add github actions build to produce the final image AND then tftp root (basically what is in the base/ folder + the raspberry pi bootloader apt package code)
