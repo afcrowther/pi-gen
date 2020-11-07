@@ -60,3 +60,9 @@ dtparam=audio=on
 dtoverlay=vc4-fkms-v3d
 max_framebuffers=2
 arm_64bit=1
+start_x=0
+enable_uart=0
+gpu_mem=16
+
+# Enable initramfs
+initramfs init.rd followkernel
