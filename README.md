@@ -72,24 +72,15 @@ The following environment variables are supported:
 
  * `DEPLOY_DIR`  (Default: `"$BASE_DIR/deploy"`)
 
-   Output directory for target system images and NOOBS bundles.
+   Output directory for target system images.
 
  * `DEPLOY_ZIP` (Default: `1`)
 
    Setting to `0` will deploy the actual image (`.img`) instead of a zipped image (`.zip`).
 
- * `USE_QEMU` (Default: `"0"`)
-
-   Setting to '1' enables the QEMU mode - creating an image that can be mounted via QEMU for an emulated
-   environment. These images include "-qemu" in the image file name.
-
  * `LOCALE_DEFAULT` (Default: "en_GB.UTF-8" )
 
    Default system locale.
-
- * `TARGET_HOSTNAME` (Default: "raspberrypi" )
-
-   Setting the hostname to the specified value.
 
  * `KEYBOARD_KEYMAP` (Default: "gb" )
 
@@ -121,26 +112,6 @@ The following environment variables are supported:
  * `FIRST_USER_PASS` (Default: "raspberry")
 
    Password for the first user
-
- * `WPA_ESSID`, `WPA_PASSWORD` and `WPA_COUNTRY` (Default: unset)
-
-   If these are set, they are use to configure `wpa_supplicant.conf`, so that the Raspberry Pi can automatically connect to a wireless network on first boot. If `WPA_ESSID` is set and `WPA_PASSWORD` is unset an unprotected wireless network will be configured. If set, `WPA_PASSWORD` must be between 8 and 63 characters.
-
- * `ENABLE_SSH` (Default: `0`)
-
-   Setting to `1` will enable ssh server for remote log in. Note that if you are using a common password such as the defaults there is a high risk of attackers taking over you Raspberry Pi.
-
-  * `PUBKEY_SSH_FIRST_USER` (Default: unset)
-
-   Setting this to a value will make that value the contents of the FIRST_USER_NAME's ~/.ssh/authorized_keys.  Obviously the value should
-   therefore be a valid authorized_keys file.  Note that this does not
-   automatically enable SSH.
-
-  * `PUBKEY_ONLY_SSH` (Default: `0`)
-
-   * Setting to `1` will disable password authentication for SSH and enable
-   public key authentication.  Note that if SSH is not enabled this will take
-   effect when SSH becomes enabled.
 
  * `STAGE_LIST` (Default: `stage*`)
 
@@ -197,7 +168,7 @@ The following process is followed to build images:
        be interrupted with a bash session, allowing an opportunity to create/revise
        the patches.
 
-  * If the stage directory contains files called "EXPORT_NOOBS" or "EXPORT_IMAGE" then
+  * If the stage directory contains files called "EXPORT_IMAGE" then
     add this stage to a list of images to generate
 
   * Generate the images for any stages that have specified them
@@ -276,10 +247,9 @@ maintenance and allows for more easy customization.
 
  - **Stage 2** - lite system.  This stage produces the Raspbian-Lite image.  It
    installs some optimized memory functions, sets timezone and charmap
-   defaults, installs fake-hwclock and ntp, wireless LAN and bluetooth support,
-   dphys-swapfile, and other basics for managing the hardware.  It also
-   creates necessary groups and gives the pi user access to sudo and the
-   standard console hardware permission groups.
+   defaults, installs fake-hwclock and ntp, dphys-swapfile, and other basics for 
+   managing the hardware.  It also creates necessary groups and gives the pi user 
+   access to sudo and the standard console hardware permission groups.
 
    There are a few tools that may not make a whole lot of sense here for
    development purposes on a minimal system such as basic Python and Lua
@@ -289,18 +259,6 @@ maintenance and allows for more easy customization.
    you were looking for something between truly minimal and Raspbian-Lite,
    here's where you start trimming.
 
- - **Stage 3** - desktop system.  Here's where you get the full desktop system
-   with X11 and LXDE, web browsers, git for development, Raspbian custom UI
-   enhancements, etc.  This is a base desktop system, with some development
-   tools installed.
-
- - **Stage 4** - Normal Raspbian image. System meant to fit on a 4GB card. This is the
-   stage that installs most things that make Raspbian friendly to new
-   users like system documentation.
-
- - **Stage 5** - The Raspbian Full image. More development
-   tools, an email client, learning tools like Scratch, specialized packages
-   like sonic-pi, office productivity, etc.  
 
 ### Stage specification
 
@@ -370,9 +328,10 @@ You may also need to load the module by hand - run `modprobe binfmt_misc`.
 # TODO
 
 - Add raspberry pi kernel as a submodule
+- Include the initramfs in this project as a submodule?
 - Add github actions build to produce the final image AND then tftp root (basically what is in the base/ folder + the raspberry pi bootloader apt package code)
 - Make stage 0 generate what is currently in the base/ directory (build kernel, modules, etc)
-- Include the initramfs in this project
-- Fix cmdline to not have a root part uuid, instead let the initramfs handle it if we can
-- Remove the user creation for FIRST USER NAME etc, use cloud init
-- Switch to systemd networking
+- Make this project have 2 outputs:
+  - The final ISO with python agent (aka user image in ironic)
+  - A tftp root folder, tarballed, which contains all overlays, boot files, cmdline, config txt, tarball and init.rd
+- Copy code from set-partuuid to python deployer

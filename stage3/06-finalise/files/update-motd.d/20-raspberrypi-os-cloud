@@ -1,0 +1,40 @@
+#!/bin/sh
+
+echo "Raspberry Pi Cloud OS \n"
+
+upSeconds="$(/usr/bin/cut -d. -f1 /proc/uptime)"
+secs=$((${upSeconds}%60))
+mins=$((${upSeconds}/60%60))
+hours=$((${upSeconds}/3600%24))
+days=$((${upSeconds}/86400))
+
+# get the load averages
+read one five fifteen rest < /proc/loadavg
+
+echo "$(tput setaf 2)
+
+                                         Raspberry Pi Cloud OS
+
+                _                                               _
+              (`  ).                   _                       (`  ).                   _
+             (     ).              .:(`  )`.                   (     ).              .:(`  )`.
+)           _(       '`.          :(   .    )                 _(       '`.          :(   .    )
+        .=(`(      .   )     .--  `.  (    ) )            .=(`(      .   )     .--  `.  (    ) )
+       ((    (..__.:'-'   .+(   )   ` _`  ) )            ((    (..__.:'-'   .+(   )   ` _`  ) )
+`.     `(       ) )       (   .  )     (   )  ._         `(       ) )       (   .  )     (   )  ._
+  )      ` __.:'   )     (   (   ))     `-'.-(`  )         ` __.:'   )     (   (   ))     `-'.-(`  )
+)  )  ( )       --'       `- __.'         :(      ))    ( )       --'       `- __.'         :(      ))
+.-'  (_.'          .')                    `(    )  ))  (_.'          .')                    `(    )  ))
+                  (_  )                     ` __.:'                 (_  )                     ` __.:'
+
+--..,___.--,--'`,---..-.--+--.,,-,,..._.--..-._.-a:f--.--..,___.--,--'`,---..-.--+--.,,-,,..._.--..-._.-
+
+                $(date +"%A, %e %B %Y, %r")
+                Uptime.............: $(printf "%d days, %02dh%02dm%02ds" "$days" "$hours" "$mins" "$secs")
+                Memory.............: $(free -m | awk 'NR==2 { printf "Total: %sMB, Used: %sMB, Free: %sMB",$2,$3,$4; }')
+                Load Averages......: ${one}, ${five}, ${fifteen} (1, 5, 15 min)
+                Running Processes..: $(ps ax | wc -l | tr -d " ")
+                IP Addresses.......: $(ip a | awk '/ global /{ print $2; exit }')%e %B %Y, %r")
+                Root Disk Space....: $(df -h / | awk 'NR==2 { printf "Total: %sB, Used: %sB, Free: %sB",$2,$3,$4; }')
+                Data Disk Space....: $(df -h /dev/sdb | awk 'NR==2 { printf "Total: %sB, Used: %sB, Free: %sB",$2,$3,$4; }')
+$(tput sgr0)"

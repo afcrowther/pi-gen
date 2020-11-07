@@ -1,0 +1,17 @@
+aufs-tools
+apt-transport-https
+software-properties-common
+conntrack
+socat
+e2fsprogs
+xfsprogs
+ebtables
+arptables
+ca-certificates
+gnupg2
+openssl
+lvm2
+open-iscsi
+python-apt
+python3.7
+python2

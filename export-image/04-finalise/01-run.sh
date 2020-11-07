@@ -19,10 +19,8 @@ fi
 rm -f "${ROOTFS_DIR}/etc/apt/apt.conf.d/51cache"
 rm -f "${ROOTFS_DIR}/usr/bin/qemu-arm-static"
 
-if [ "${USE_QEMU}" != "1" ]; then
-	if [ -e "${ROOTFS_DIR}/etc/ld.so.preload.disabled" ]; then
-		mv "${ROOTFS_DIR}/etc/ld.so.preload.disabled" "${ROOTFS_DIR}/etc/ld.so.preload"
-	fi
+if [ -e "${ROOTFS_DIR}/etc/ld.so.preload.disabled" ]; then
+	mv "${ROOTFS_DIR}/etc/ld.so.preload.disabled" "${ROOTFS_DIR}/etc/ld.so.preload"
 fi
 
 rm -f "${ROOTFS_DIR}/etc/network/interfaces.dpkg-old"
