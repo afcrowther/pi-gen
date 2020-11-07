@@ -1,4 +1,4 @@
-IMG_NAME="RaspberryPiOSAdam"
+IMG_NAME="RPiOS"
 RELEASE="buster"
 APT_PROXY=""
 BASE_DIR="$(pwd)"
